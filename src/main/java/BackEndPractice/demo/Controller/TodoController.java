@@ -1,8 +1,7 @@
 package BackEndPractice.demo.Controller;
 
-import BackEndPractice.demo.Model.TodoModel;
+import BackEndPractice.demo.Model.Todo;
 import BackEndPractice.demo.Repo.TodoRepo;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,26 +24,26 @@ public class TodoController
 
     //GET ALL Controller
     @GetMapping("")
-    List<TodoModel> getAllTodo()
+    List<Todo> getAllTodo()
     {
         return this.todoRepo.findAll();
     }
 
     //POST / CREATE Todo Item
     @PostMapping
-    ResponseEntity<TodoModel> postItem(@RequestBody TodoModel body)
+    ResponseEntity<Todo> postItem(@RequestBody Todo body)
     {
         return new ResponseEntity<>(this.todoRepo.save(body), HttpStatus.OK);
     }
 
     //UPDATE / PATCH
     @PatchMapping("{id}")
-    ResponseEntity<TodoModel> patchTodo(@PathVariable Long id, @RequestBody Map<String, String> body)
+    ResponseEntity<Todo> patchTodo(@PathVariable Long id, @RequestBody Map<String, String> body)
     {
         //Is User Present
         if (this.todoRepo.findById(id).isPresent())
         {
-            TodoModel holder = this.todoRepo.findById(id).get();
+            Todo holder = this.todoRepo.findById(id).get();
             for (Map.Entry<String, String> entry : body.entrySet())
             {
                 switch (entry.getKey())
@@ -64,7 +63,7 @@ public class TodoController
 
     //DELETE ITEM
 @DeleteMapping("{id}")
-    ResponseEntity<TodoModel> deleteItem(@PathVariable Long id)
+    ResponseEntity<Todo> deleteItem(@PathVariable Long id)
 {
     //Exist
     if(this.todoRepo.findById(id).isPresent())
